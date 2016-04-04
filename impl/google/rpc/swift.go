@@ -155,7 +155,7 @@ func doFinish(call rpc.ClientCall, numResults int) (C.SwiftByteArrayArray, error
 		C.memcpy(cVomResultCopy, unsafe.Pointer(&vomResult[0]), C.size_t(len(vomResult)))
 		var cVomResult C.SwiftByteArray
 		cVomResult.length = C._GoUint64(len(vomResult))
-		cVomResult.data = (*C.char)(cVomResultCopy)
+		cVomResult.data = cVomResultCopy
 		vomResults[i] = cVomResult
 	}
 	return cVomResults, nil

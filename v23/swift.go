@@ -8,6 +8,7 @@ package v23
 
 import (
 	_ "v.io/x/swift/v23/context"
+	_ "v.io/x/swift/v23/security"
 )
 
 import "C"

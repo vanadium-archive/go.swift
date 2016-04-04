@@ -7,13 +7,13 @@
 package swift
 
 import (
+	"os"
 	"unsafe"
 
 	"v.io/x/lib/vlog"
-
+	"v.io/x/ref"
 	// TODO Make this pluggable somehow
 	_ "v.io/x/ref/runtime/factories/roaming"
-
 	sgoogle "v.io/x/swift/impl/google"
 	sutil "v.io/x/swift/util"
 	sv23 "v.io/x/swift/v23"
@@ -23,11 +23,15 @@ import (
 import "C"
 
 //export swift_io_v_v23_V_nativeInitGlobal
-func swift_io_v_v23_V_nativeInitGlobal(errOut *C.SwiftVError) {
+func swift_io_v_v23_V_nativeInitGlobal(credentialsDir *C.char, errOut *C.SwiftVError) {
 	// Send all vlog logs to stderr during the init so that we don't crash on android trying
 	// to create a log file.  These settings will be overwritten in nativeInitLogging below.
 	vlog.Log.Configure(vlog.OverridePriorConfiguration(true), vlog.LogToStderr(true))
 
+	if credentialsDir != nil {
+		dir := C.GoString(credentialsDir)
+		os.Setenv(ref.EnvCredentials, dir)
+	}
 	if err := sv23.Init(); err != nil {
 		sutil.ThrowSwiftError(nil, err, unsafe.Pointer(errOut))
 		return

@@ -23,7 +23,7 @@ typedef _GoHandle GoClientCallHandle;
 // Express byte arrays with lengths
 typedef struct {
     _GoUint64 length;
-    char* data;
+    void* data;
 } SwiftByteArray;
 
 // Express arrays of byte arrays with lengths
