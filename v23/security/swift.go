@@ -19,14 +19,11 @@ import (
 	"v.io/x/swift/v23/context"
 )
 
-/*
-#include <string.h> // memcpy
-#import "../../types.h"
-*/
+// #import "../../types.h"
 import "C"
 
-//export swift_io_v_v23_security_simple_nativeGetPublicKey
-func swift_io_v_v23_security_simple_nativeGetPublicKey(ctxHandle C.GoContextHandle, errOut *C.SwiftVError) *C.char {
+//export swift_io_v_v23_security_simple_nativePublicKey
+func swift_io_v_v23_security_simple_nativePublicKey(ctxHandle C.GoContextHandle, errOut *C.SwiftVError) *C.char {
 	ctx := context.GoContext(uint64(ctxHandle))
 	der, err := v23.GetPrincipal(ctx).PublicKey().MarshalBinary()
 	if err != nil {
@@ -37,8 +34,8 @@ func swift_io_v_v23_security_simple_nativeGetPublicKey(ctxHandle C.GoContextHand
 	return C.CString(base64.URLEncoding.EncodeToString(der))
 }
 
-//export swift_io_v_v23_security_simple_nativeSetDefaultBlessings
-func swift_io_v_v23_security_simple_nativeSetDefaultBlessings(ctxHandle C.GoContextHandle, encodedSwiftBlessings C.SwiftByteArray, errOut *C.SwiftVError) {
+//export swift_io_v_v23_security_simple_nativeSetBlessings
+func swift_io_v_v23_security_simple_nativeSetBlessings(ctxHandle C.GoContextHandle, encodedSwiftBlessings C.SwiftByteArray, errOut *C.SwiftVError) {
 	ctx := context.GoContext(uint64(ctxHandle))
 	encodedBlessings := util.GoBytesNoCopy(unsafe.Pointer(&encodedSwiftBlessings))
 	var blessings security.Blessings
@@ -54,8 +51,8 @@ func swift_io_v_v23_security_simple_nativeSetDefaultBlessings(ctxHandle C.GoCont
 	}
 }
 
-//export swift_io_v_v23_security_simple_nativeGetDefaultBlessingsDebugString
-func swift_io_v_v23_security_simple_nativeGetDefaultBlessingsDebugString(ctxHandle C.GoContextHandle) *C.char {
+//export swift_io_v_v23_security_simple_nativeBlessingsDebugString
+func swift_io_v_v23_security_simple_nativeBlessingsDebugString(ctxHandle C.GoContextHandle) *C.char {
 	ctx := context.GoContext(uint64(ctxHandle))
 	blessings, _ := v23.GetPrincipal(ctx).BlessingStore().Default()
 	return C.CString(fmt.Sprintf("%v", blessings))
