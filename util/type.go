@@ -16,6 +16,7 @@ import (
 )
 
 /*
+#include <string.h> // memcpy
 #include <stdlib.h>
 #import "../types.h"
 */
@@ -59,6 +60,17 @@ func GoTime(t float64) time.Time {
 
 func GoDuration(d float64) time.Duration {
 	return time.Duration(int64(d * 1e9))
+}
+
+func GoString(swiftStringPtr unsafe.Pointer, freeWhenDone bool) string {
+	str := *(*C.SwiftCString)(swiftStringPtr)
+	if freeWhenDone && str.data != nil {
+		defer C.free(unsafe.Pointer(str.data))
+	}
+	if str.data == nil || str.length == 0 {
+		return ""
+	}
+	return C.GoStringN(str.data, C.int(str.length))
 }
 
 //export swift_io_v_swift_impl_util_type_nativeBase64UrlDecode

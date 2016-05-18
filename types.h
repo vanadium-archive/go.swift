@@ -19,6 +19,17 @@ typedef _GoUint64 _GoHandle;
 typedef _GoHandle GoContextHandle;
 typedef _GoHandle GoCancelableContextHandle;
 typedef _GoHandle GoClientCallHandle;
+typedef _GoHandle GoDiscoveryHandle;
+
+typedef struct {
+    _GoUint64 length;
+    char *data;
+} SwiftCString;
+
+typedef struct {
+    _GoUint64 length;
+    SwiftCString *data;
+} SwiftCStringArray;
 
 // Express byte arrays with lengths
 typedef struct {
@@ -44,7 +55,12 @@ typedef SwiftVError* SwiftVErrorPtr;
 // Asynchronous callback function pointers, which use their own handle (AsyncCallbackIdentifier) to overcome
 // Swift limitations on context-free closures (function pointers)
 typedef int AsyncCallbackIdentifier;
-typedef void (*SwiftAsyncSuccessCallback)(AsyncCallbackIdentifier);
-typedef void (*SwiftAsyncSuccessHandleCallback)(AsyncCallbackIdentifier, _GoHandle);
-typedef void (*SwiftAsyncSuccessByteArrayArrayCallback)(AsyncCallbackIdentifier, SwiftByteArrayArray);
-typedef void (*SwiftAsyncFailureCallback)(AsyncCallbackIdentifier, SwiftVError);
+typedef void (*SwiftAsyncJsonCallback)(AsyncCallbackIdentifier asyncId, SwiftByteArray json);
+typedef void (*SwiftAsyncSuccessCallback)(AsyncCallbackIdentifier asyncId);
+typedef void (*SwiftAsyncSuccessHandleCallback)(AsyncCallbackIdentifier asyncId, _GoHandle handle);
+typedef void (*SwiftAsyncSuccessByteArrayArrayCallback)(AsyncCallbackIdentifier asyncId, SwiftByteArrayArray byteArrayArray);
+typedef void (*SwiftAsyncFailureCallback)(AsyncCallbackIdentifier asyncId, SwiftVError err);
+
+// Other callbacks
+typedef void (*SwiftAsyncVoidCallback)();
+

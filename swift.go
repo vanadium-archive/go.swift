@@ -49,7 +49,6 @@ func swift_io_v_v23_V_nativeInitLogging(logDir *C.char, logToStderr bool, logLev
 		sutil.ThrowSwiftError(nil, err, unsafe.Pointer(errOut))
 		return
 	}
-
 	vlog.Log.Configure(vlog.OverridePriorConfiguration(true), dir, toStderr, level, vmodule)
 }
 
