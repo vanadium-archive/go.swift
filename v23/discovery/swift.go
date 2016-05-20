@@ -1,4 +1,4 @@
-// Copyright 2015 The Vanadium Authors. All rights reserved.
+// Copyright 2016 The Vanadium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -86,11 +86,11 @@ func swift_io_v_v23_discovery_scan(ctxHandle C.GoContextHandle, discoveryHandle 
 	go func() {
 		for update := range ch {
 			data := struct {
-				IsLost        bool
-				Ad            discovery.Advertisement
+				IsLost bool
+				Ad     discovery.Advertisement
 			}{
-				IsLost:        update.IsLost(),
-				Ad:            update.Advertisement(),
+				IsLost: update.IsLost(),
+				Ad:     update.Advertisement(),
 			}
 			b, err := json.Marshal(data)
 			if err != nil {
